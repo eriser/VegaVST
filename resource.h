@@ -74,22 +74,24 @@ instrument determined by PLUG _IS _INST
 #define ADD_ID 112
 #define NOTE_ID 113
 #define MINIKNOB_ID 114
+#define PITCHMOD_ID 115
 
 // Image resource locations for this plug.
 #define KNOB_FN "resources/img/VegaKnob.png"
 #define BACKGROUND_FN "resources/img/VegaClearBG.png"
-#define PIANO_BLK_FN "resources/img/blackkey.png"
-#define PIANO_WHT_FN "resources/img/whitekey.png"
-#define PASS_FN "resources/img/filtermode.png"
-#define SLIDER_FN "resources/img/filtermode.png"
-#define VOICES_FN "resources/img/filtermode.png"
-#define SLOPE_FN "resources/img/filtermode.png"
-#define WAVE_FN "resources/img/filtermode.png"
-#define OCTAVE_FN "resources/img/filtermode.png"
+#define PIANO_BLK_FN "resources/img/BlackKeyPressed.png"
+#define PIANO_WHT_FN "resources/img/WhiteKeysPressed.png"
+#define PASS_FN "resources/img/PassSwitch.png"
+#define SLIDER_FN "resources/img/VegaSlider.png"
+#define VOICES_FN "resources/img/Voices.png"
+#define SLOPE_FN "resources/img/Slope.png"
+#define WAVE_FN "resources/img/Waves.png"
+#define OCTAVE_FN "resources/img/Octave.png"
 #define BUTTON_FN "resources/img/filtermode.png"
 #define ADD_FN "resources/img/filtermode.png"
-#define NOTE_FN "resources/img/filtermode.png"
-#define MINIKNOB_FN "resources/img/VegaMiniKnob"
+#define NOTE_FN "resources/img/Note.png"
+#define MINIKNOB_FN "resources/img/VegaMiniKnob.png"
+#define PITCHMOD_FN "resources/img/BendWheel.png"
 
 // GUI default dimensions
 #define GUI_WIDTH 880

@@ -66,6 +66,9 @@ enum EParams
   mEQMid,
   mEQLow,
   mVolume,
+  mBendRange,
+  mGlide,
+  mPitchMod,
   kNumParams
 };
 
@@ -82,64 +85,67 @@ typedef struct
 } paramProperties;
 
 const paramProperties paramProps[kNumParams] = {
-  { "Osc 1 Wave", 30, 75, 0., 0., 0. },
-  { "Osc 1 Octave", 30, 75, 0., 0., 0. },
-  { "Osc 1 Voices", 30, 75, 0., 0., 0. },
-  { "Osc 1 Pitch", 69, 61, 0., 0., 0. },
-  { "Osc 1 Invert", 30, 75, 0., 0., 0. },
-  { "Osc 1 Retrig", 30, 75, 0., 0., 0. },
-  { "Osc 1 Fine", 30, 75, 0., -1., 1. },
-  { "Osc 1 Volume", 30, 75, 0., 0., 1. },
-  { "Osc 1 Detune", 30, 75, 0., 0., 1. },
-  { "Osc 1 Stereo", 30, 75, 0., 0., 1. },
-  { "Osc 1 Phase", 30, 75, 0., 0., 1. },
-  { "Osc 1 Pan", 30, 75, 0., -1., 1. },
-  { "Osc 2 Wave", 30, 75, 0., 0., 0. },
-  { "Osc 2 Octave", 30, 75, 0., 0., 0. },
-  { "Osc 2 Voices", 30, 75, 0., 0., 0. },
-  { "Osc 2 Pitch", 69, 61, 0., 0., 0. },
-  { "Osc 2 Invert", 30, 75, 0., 0., 0. },
-  { "Osc 2 Retrig", 30, 75, 0., 0., 0. },
-  { "Osc 2 Fine", 30, 75, 0., -1., 1. },
-  { "Osc 2 Volume", 30, 75, 0., 0., 1. },
-  { "Osc 2 Detune", 30, 75, 0., 0., 1. },
-  { "Osc 2 Stereo", 30, 75, 0., 0., 1. },
-  { "Osc 2 Phase", 30, 75, 0., 0., 1. },
-  { "Osc 2 Pan", 30, 75, 0., -1., 1. },
-  { "Osc 3 Wave", 30, 75, 0., 0., 0. },
-  { "Osc 3 Octave", 30, 75, 0., 0., 0. },
-  { "Osc 3 Voices", 30, 75, 0., 0., 0. },
-  { "Osc 3 Pitch", 69, 61, 0., 0., 0. },
-  { "Osc 3 Invert", 30, 75, 0., 0., 0. },
-  { "Osc 3 Retrig", 30, 75, 0., 0., 0. },
-  { "Osc 3 Fine", 30, 75, 0., -1., 1. },
-  { "Osc 3 Volume", 30, 75, 0., 0., 1. },
-  { "Osc 3 Detune", 30, 75, 0., 0., 1. },
-  { "Osc 3 Stereo", 30, 75, 0., 0., 1. },
-  { "Osc 3 Phase", 30, 75, 0., 0., 1. },
-  { "Osc 3 Pan", 30, 75, 0., -1., 1. },
-  { "Filter Type", 30, 188, 0., 0., 0. },
-  { "Filter Slope", 30, 188, 0., 0., 0. },
-  { "Filter Cutoff", 69, 174, 0.99, 0.0, 0.99 },
-  { "Filter Resonance", 124, 174, 0.0, 0.0, 1.0 },
-  { "Filter Env Amount", 234, 174, 0.0, -1.0, 1.0 },
-  { "Volume Env Attack", 323, 61, 0.01, 0.01, 10.0 },
-  { "Volume Env Decay", 378, 61, 0.5, 0.01, 15.0 },
-  { "Volume Env Sustain", 433, 61, 0.1, 0.001, 1.0 },
-  { "Volume Env Release", 488, 61, 1.0, 0.01, 15.0 },
-  { "Filter Env Attack", 323, 174, 0.01, 0.01, 10.0 },
-  { "Filter Env Decay", 378, 174, 0.5, 0.01, 15.0 },
-  { "Filter Env Sustain", 433, 174, 0.1, 0.001, 1.0 },
-  { "Filter Env Release", 488, 174, 1.0, 0.01, 15.0 },
-  { "LFO Waveform", 30, 298, 0., 0., 0. },
-  { "LFO Amount", 179, 174, 0.0, 0.0, 1.0 },
-  { "LFO Frequency", 69, 284, 6.0, 0.01, 30.0 },
-  { "LFO Offset", 69, 284, 6.0, 0.01, 30.0 },
-  { "LFO Gain", 69, 284, 6.0, 0.01, 30.0 },
-  { "EQ High", 323, 174, 1.0, 0.0, 2.0 },
-  { "EQ Mid", 378, 174, 1.0, 0.0, 2.0 },
-  { "EQ Low", 433, 174, 1.0, 0.0, 2.0 },
-  { "Out Vol", 433, 174, 1.0, 0.0, 1.0 }
+  { "Osc 1 Wave", 57, 104, 0., 0., 0. },
+  { "Osc 1 Octave", 131, 104, 0., 0., 0. },
+  { "Osc 1 Voices", 57, 120, 0., 0., 0. },
+  { "Osc 1 Pitch", 131, 120, 0., 0., 0. },
+  { "Osc 1 Invert", 244, 104, 0., 0., 0. },
+  { "Osc 1 Retrig", 244, 120, 0., 0., 0. },
+  { "Osc 1 Fine", 180, 106, 0., -1., 1. },
+  { "Osc 1 Volume", 20, 149, 0., 0., 1. },
+  { "Osc 1 Detune", 69, 149, 0., 0., 1. },
+  { "Osc 1 Stereo", 118, 149, 0., 0., 1. },
+  { "Osc 1 Phase", 167, 149, 0., 0., 1. },
+  { "Osc 1 Pan", 216, 149, 0., -1., 1. },
+  { "Osc 2 Wave", 57, 231, 0., 0., 0. },
+  { "Osc 2 Octave", 131, 231, 0., 0., 0. },
+  { "Osc 2 Voices", 57, 247, 0., 0., 0. },
+  { "Osc 2 Pitch", 131, 247, 0., 0., 0. },
+  { "Osc 2 Invert", 244, 231, 0., 0., 0. },
+  { "Osc 2 Retrig", 244, 247, 0., 0., 0. },
+  { "Osc 2 Fine", 180, 233, 0., -1., 1. },
+  { "Osc 2 Volume", 20, 276, 0., 0., 1. },
+  { "Osc 2 Detune", 69, 276, 0., 0., 1. },
+  { "Osc 2 Stereo", 118, 276, 0., 0., 1. },
+  { "Osc 2 Phase", 167, 276, 0., 0., 1. },
+  { "Osc 2 Pan", 216, 276, 0., -1., 1. },
+  { "Osc 3 Wave", 57, 358, 0., 0., 0. },
+  { "Osc 3 Octave", 131, 358, 0., 0., 0. },
+  { "Osc 3 Voices", 57, 374, 0., 0., 0. },
+  { "Osc 3 Pitch", 131, 374, 0., 0., 0. },
+  { "Osc 3 Invert", 244, 358, 0., 0., 0. },
+  { "Osc 3 Retrig", 244, 374, 0., 0., 0. },
+  { "Osc 3 Fine", 180, 360, 0., -1., 1. },
+  { "Osc 3 Volume", 20, 403, 0., 0., 1. },
+  { "Osc 3 Detune", 69, 403, 0., 0., 1. },
+  { "Osc 3 Stereo", 118, 403, 0., 0., 1. },
+  { "Osc 3 Phase", 167, 403, 0., 0., 1. },
+  { "Osc 3 Pan", 216, 403, 0., -1., 1. },
+  { "Filter Type", 332, 221, 0., 0., 0. },
+  { "Filter Slope", 332, 237, 0., 0., 0. },
+  { "Filter Cutoff", 375, 217, 0.99, 0.0, 0.99 },
+  { "Filter Resonance", 424, 217, 0.0, 0.0, 1.0 },
+  { "Filter Env Amount", 473, 217, 0.0, -1.0, 1.0 },
+  { "Volume Env Attack", 350, 108, 0.01, 0.01, 10.0 },
+  { "Volume Env Decay", 375, 108, 0.5, 0.01, 15.0 },
+  { "Volume Env Sustain", 400, 108, 0.1, 0.001, 1.0 },
+  { "Volume Env Release", 424, 108, 1.0, 0.01, 15.0 },
+  { "Filter Env Attack", 400, 294, 0.01, 0.01, 10.0 },
+  { "Filter Env Decay", 425, 294, 0.5, 0.01, 15.0 },
+  { "Filter Env Sustain", 450, 294, 0.1, 0.001, 1.0 },
+  { "Filter Env Release", 474, 294, 1.0, 0.01, 15.0 },
+  { "LFO Waveform", 291, 417, 0., 0., 0. },
+  { "LFO Amount", 326, 403, 0.0, 0.0, 1.0 },
+  { "LFO Frequency", 375, 403, 6.0, 0.01, 30.0 },
+  { "LFO Offset", 424, 403, 6.0, 0.01, 30.0 },
+  { "LFO Gain", 473, 403, 6.0, 0.01, 30.0 },
+  { "EQ High", 818, 111, 1.0, 0.0, 2.0 },
+  { "EQ Mid", 818, 167, 1.0, 0.0, 2.0 },
+  { "EQ Low", 818, 223, 1.0, 0.0, 2.0 },
+  { "Out Vol", 811, 402, 1.0, 0.0, 1.0 },
+  { "Bend Range", 13, 525, 1.0, 0.0, 1.0 },
+  { "Glide", 9, 482, 1.0, 0.0, 1.0 },
+  { "Pitch Mod", 52, 481, 1.0, 0.0, 1.0 },
 };
 
 enum ELayout
@@ -276,7 +282,7 @@ void Vega::CreateGraphics() {
   IBitmap waveImage = pGraphics->LoadIBitmap(WAVE_ID, WAVE_FN, 4);
   IBitmap slopeImage = pGraphics->LoadIBitmap(SLOPE_ID, SLOPE_FN, 3);
   IBitmap voicesImage = pGraphics->LoadIBitmap(VOICES_ID, VOICES_FN, 8);
-  IBitmap octaveImage = pGraphics->LoadIBitmap(OCTAVE_ID, OCTAVE_FN, 7);
+  IBitmap octaveImage = pGraphics->LoadIBitmap(OCTAVE_ID, OCTAVE_FN, 9);
   IBitmap noteImage = pGraphics->LoadIBitmap(NOTE_ID, NOTE_FN, 15);
   IBitmap whiteKeyImage = pGraphics->LoadIBitmap(PIANO_WHT_ID, PIANO_WHT_FN, 6);
   IBitmap blackKeyImage = pGraphics->LoadIBitmap(PIANO_BLK_ID, PIANO_BLK_FN);
@@ -284,13 +290,14 @@ void Vega::CreateGraphics() {
   IBitmap sliderImage = pGraphics->LoadIBitmap(SLIDER_ID, SLIDER_FN, 1);
   IBitmap buttonGrnImage = pGraphics->LoadIBitmap(BUTTON_ID, BUTTON_FN, 1);
   IBitmap buttonAddImage = pGraphics->LoadIBitmap(ADD_ID, ADD_FN, 1);
+  IBitmap wheelImage = pGraphics->LoadIBitmap(PITCHMOD_ID, PITCHMOD_FN, 100);
 
   keyboardY = kHeight - 85;
-  keyboardX = kWidth - 800;
+  keyboardX = kWidth - 788;
 
-  int keyCoordinates[12] = { 0, 7, 12, 20, 24, 36, 43, 48, 56, 60, 69, 72 };
+  int keyCoordinates[12] = { 0, 17, 0, 49, 0, 0, 98, 0, 128, 0, 157, 0 };
   mVirtualKeyboard = new IKeyboardControl(this, keyboardX, keyboardY, virtualKeyboardMinimumNoteNumber,
-    5, &whiteKeyImage, &blackKeyImage, keyCoordinates);
+    4, &whiteKeyImage, &blackKeyImage, keyCoordinates);
   pGraphics->AttachControl(mVirtualKeyboard);
 
   for (int i = 0; i < kNumParams; i++) {
@@ -304,15 +311,15 @@ void Vega::CreateGraphics() {
     case mOsc3Wave:
     case mLFOWave:
       graphic = &waveImage;
-      control = new ISwitchControl(this, properties.x, properties.y, i, graphic);
+      control = new IKnobMultiControl(this, properties.x, properties.y, i, graphic);
       break;
     case mFilterType:
       graphic = &passImage;
-      control = new ISwitchControl(this, properties.x, properties.y, i, graphic);
+      control = new IKnobMultiControl(this, properties.x, properties.y, i, graphic);
       break;
     case mFilterSlope:
       graphic = &slopeImage;
-      control = new ISwitchControl(this, properties.x, properties.y, i, graphic);
+      control = new IKnobMultiControl(this, properties.x, properties.y, i, graphic);
       break;
     case mOsc1Invert:
     case mOsc1Retrig:  
@@ -320,8 +327,8 @@ void Vega::CreateGraphics() {
     case mOsc2Retrig:
     case mOsc3Invert:
     case mOsc3Retrig:
-      graphic = &buttonGrnImage;    
-      control = new ISwitchControl(this, properties.x, properties.y, i, graphic);
+      //graphic = &buttonGrnImage;    
+      //control = new ISwitchControl(this, properties.x, properties.y, i, graphic);
       break;
     case mVolAttack:
     case mVolDecay:
@@ -332,36 +339,39 @@ void Vega::CreateGraphics() {
     case mFilterSustain:
     case mFilterRelease:
       graphic = &sliderImage;
-      control = new IFaderControl(this, properties.x, properties.y, 50, i, graphic);
+      control = new IFaderControl(this, properties.x, properties.y, 73, i, graphic);
       break;
     case mOsc1Voices:
     case mOsc2Voices:
     case mOsc3Voices:
       graphic = &voicesImage;
-      control = new ISwitchControl(this, properties.x, properties.y, i, graphic);
+      control = new IKnobMultiControl(this, properties.x, properties.y, i, graphic);
       break;
     case mOsc1Oct:
     case mOsc2Oct:
     case mOsc3Oct:
       graphic = &octaveImage;
-      control = new ISwitchControl(this, properties.x, properties.y, i, graphic);
+      control = new IKnobMultiControl(this, properties.x, properties.y, i, graphic);
       break;
     case mOsc1Pitch:
     case mOsc2Pitch:
     case mOsc3Pitch:
+    case mBendRange:
       graphic = &noteImage;
-      control = new ISwitchControl(this, properties.x, properties.y, i, graphic);
+      control = new IKnobMultiControl(this, properties.x, properties.y, i, graphic);
       break;
     case mOsc1Fine:
     case mOsc2Fine:
     case mOsc3Fine:
+    case mGlide:
       graphic = &miniKnobImage;
       control = new IKnobMultiControl(this, properties.x, properties.y, i, graphic);
       break;
-    case mVolume:
-      graphic = &waveImage;
-      control = new ISwitchControl(this, properties.x, properties.y, i, graphic);
+    case mPitchMod:
+      graphic = &wheelImage;
+      control = new IKnobMultiControl(this, properties.x, properties.y, i, graphic);
       break;
+    // add pic
     default:
       graphic = &knobImage;
       control = new IKnobMultiControl(this, properties.x, properties.y, i, graphic);
