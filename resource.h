@@ -87,7 +87,7 @@ instrument determined by PLUG _IS _INST
 #define SLOPE_FN "resources/img/Slope.png"
 #define WAVE_FN "resources/img/Waves.png"
 #define OCTAVE_FN "resources/img/Octave.png"
-#define BUTTON_FN "resources/img/filtermode.png"
+#define BUTTON_FN "resources/img/Button.png"
 #define ADD_FN "resources/img/filtermode.png"
 #define NOTE_FN "resources/img/Note.png"
 #define MINIKNOB_FN "resources/img/VegaMiniKnob.png"

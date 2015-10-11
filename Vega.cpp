@@ -4,7 +4,7 @@
 #include "resource.h"
 #include "IKeyboardControl.h"
 
-const int kNumPrograms = 5;
+const int kNumPrograms = 0;
 
 enum EParams
 {
@@ -49,6 +49,8 @@ enum EParams
   mFilterCutoff,
   mFilterReso,
   mFilterAmount,
+  mFilterCtlCutoff,
+  mFilterCtlReso,
   mVolAttack,
   mVolDecay,
   mVolSustain,
@@ -77,75 +79,77 @@ const double parameterStep = 0.01;
 typedef struct
 {
   const char* name;
-  const int x;
-  const int y;
+  int x;
+  int y;
   const double defaultVal;
   const double minVal;
   const double maxVal;
 } paramProperties;
 
-const paramProperties paramProps[kNumParams] = {
-  { "Osc 1 Wave", 57, 104, 0., 0., 0. },
-  { "Osc 1 Octave", 131, 104, 0., 0., 0. },
-  { "Osc 1 Voices", 57, 120, 0., 0., 0. },
-  { "Osc 1 Pitch", 131, 120, 0., 0., 0. },
-  { "Osc 1 Invert", 244, 104, 0., 0., 0. },
-  { "Osc 1 Retrig", 244, 120, 0., 0., 0. },
-  { "Osc 1 Fine", 180, 106, 0., -1., 1. },
-  { "Osc 1 Volume", 20, 149, 0., 0., 1. },
-  { "Osc 1 Detune", 69, 149, 0., 0., 1. },
-  { "Osc 1 Stereo", 118, 149, 0., 0., 1. },
-  { "Osc 1 Phase", 167, 149, 0., 0., 1. },
-  { "Osc 1 Pan", 216, 149, 0., -1., 1. },
-  { "Osc 2 Wave", 57, 231, 0., 0., 0. },
-  { "Osc 2 Octave", 131, 231, 0., 0., 0. },
-  { "Osc 2 Voices", 57, 247, 0., 0., 0. },
-  { "Osc 2 Pitch", 131, 247, 0., 0., 0. },
-  { "Osc 2 Invert", 244, 231, 0., 0., 0. },
-  { "Osc 2 Retrig", 244, 247, 0., 0., 0. },
-  { "Osc 2 Fine", 180, 233, 0., -1., 1. },
-  { "Osc 2 Volume", 20, 276, 0., 0., 1. },
-  { "Osc 2 Detune", 69, 276, 0., 0., 1. },
-  { "Osc 2 Stereo", 118, 276, 0., 0., 1. },
-  { "Osc 2 Phase", 167, 276, 0., 0., 1. },
-  { "Osc 2 Pan", 216, 276, 0., -1., 1. },
-  { "Osc 3 Wave", 57, 358, 0., 0., 0. },
-  { "Osc 3 Octave", 131, 358, 0., 0., 0. },
-  { "Osc 3 Voices", 57, 374, 0., 0., 0. },
-  { "Osc 3 Pitch", 131, 374, 0., 0., 0. },
-  { "Osc 3 Invert", 244, 358, 0., 0., 0. },
-  { "Osc 3 Retrig", 244, 374, 0., 0., 0. },
-  { "Osc 3 Fine", 180, 360, 0., -1., 1. },
-  { "Osc 3 Volume", 20, 403, 0., 0., 1. },
-  { "Osc 3 Detune", 69, 403, 0., 0., 1. },
-  { "Osc 3 Stereo", 118, 403, 0., 0., 1. },
-  { "Osc 3 Phase", 167, 403, 0., 0., 1. },
-  { "Osc 3 Pan", 216, 403, 0., -1., 1. },
-  { "Filter Type", 332, 221, 0., 0., 0. },
-  { "Filter Slope", 332, 237, 0., 0., 0. },
+paramProperties paramProps[kNumParams] = {
+  { "Osc 1 Wave", 57, 104, 0.0, 0.0, 0.0 },
+  { "Osc 1 Octave", 131, 104, 0.0, -4.0, 4.0 },
+  { "Osc 1 Voices", 57, 120, 1.0, 1.0, 8.0 },
+  { "Osc 1 Pitch", 131, 120, 0.0, -7.0, 7.0 },
+  { "Osc 1 Invert", 244, 104, 0.0, 0.0, 1.0 },
+  { "Osc 1 Retrig", 244, 120, 0.0, 0.0, 1.0 },
+  { "Osc 1 Fine", 180, 106, 0.0, -1.0, 1.0 },
+  { "Osc 1 Volume", 20, 149, 1.0, 0.0, 1.0 },
+  { "Osc 1 Detune", 69, 149, 0.0, 0.0, 1.0 },
+  { "Osc 1 Stereo", 118, 149, 0.0, -1.0, 1.0 },
+  { "Osc 1 Phase", 167, 149, 0.0, 0.0, 360.0 },
+  { "Osc 1 Pan", 216, 149, 0.0, -1.0, 1.0 },
+  { "Osc 2 Wave", 57, 231, 0.0, 0.0, 0.0 },
+  { "Osc 2 Octave", 131, 231, 0.0, -4.0, 4.0 },
+  { "Osc 2 Voices", 57, 247, 1.0, 1.0, 8.0 },
+  { "Osc 2 Pitch", 131, 247, 0.0, -7.0, 7.0 },
+  { "Osc 2 Invert", 244, 231, 0.0, 0.0, 1.0 },
+  { "Osc 2 Retrig", 244, 247, 0.0, 0.0, 1.0 },
+  { "Osc 2 Fine", 180, 233, 0.0, -1.0, 1.0 },
+  { "Osc 2 Volume", 20, 276, 1.0, 0.0, 1.0 },
+  { "Osc 2 Detune", 69, 276, 0.0, 0.0, 1.0 },
+  { "Osc 2 Stereo", 118, 276, 0.0, -1.0, 1.0 },
+  { "Osc 2 Phase", 167, 276, 0.0, 0.0, 360.0 },
+  { "Osc 2 Pan", 216, 276, 0.0, -1.0, 1.0 },
+  { "Osc 3 Wave", 57, 358, 0.0, 0.0, 0.0 },
+  { "Osc 3 Octave", 131, 358, 0.0, -4.0, 4.0 },
+  { "Osc 3 Voices", 57, 374, 1.0, 1.0, 8.0 },
+  { "Osc 3 Pitch", 131, 374, 0.0, -7.0, 7.0 },
+  { "Osc 3 Invert", 244, 358, 0.0, 0.0, 1.0 },
+  { "Osc 3 Retrig", 244, 374, 0.0, 0.0, 1.0 },
+  { "Osc 3 Fine", 180, 360, 0.0, -1.0, 1.0 },
+  { "Osc 3 Volume", 20, 403, 1.0, 0.0, 1.0 },
+  { "Osc 3 Detune", 69, 403, 0.0, 0.0, 1.0 },
+  { "Osc 3 Stereo", 118, 403, 0.0, -1.0, 1.0 },
+  { "Osc 3 Phase", 167, 403, 0.0, 0.0, 360.0 },
+  { "Osc 3 Pan", 216, 403, 0.0, -1.0, 1.0 },
+  { "Filter Type", 332, 221, 0.0, 0.0, 0.0 },
+  { "Filter Slope", 332, 237, 1.0, 1.0, 3.0 },
   { "Filter Cutoff", 375, 217, 0.99, 0.0, 0.99 },
-  { "Filter Resonance", 424, 217, 0.0, 0.0, 1.0 },
-  { "Filter Env Amount", 473, 217, 0.0, -1.0, 1.0 },
+  { "Filter Resonance", 424, 217, 0.0, 0.0, 0.99 },
+  { "Filter Env Amount", 473, 217, 0.0, 0.0, 1.0 },
+  { "Filter Control Cutoff", 285, 306, 0.99, 0.0, 0.99 },
+  { "Filter Control Reso", 334, 306, 0.0, 0.0, 0.99 },
   { "Volume Env Attack", 350, 108, 0.01, 0.01, 10.0 },
-  { "Volume Env Decay", 375, 108, 0.5, 0.01, 15.0 },
-  { "Volume Env Sustain", 400, 108, 0.1, 0.001, 1.0 },
+  { "Volume Env Decay", 375, 108, 0.01, 0.01, 15.0 },
+  { "Volume Env Sustain", 400, 108, 1.0, .001, 1.0 },
   { "Volume Env Release", 424, 108, 1.0, 0.01, 15.0 },
   { "Filter Env Attack", 400, 294, 0.01, 0.01, 10.0 },
-  { "Filter Env Decay", 425, 294, 0.5, 0.01, 15.0 },
-  { "Filter Env Sustain", 450, 294, 0.1, 0.001, 1.0 },
+  { "Filter Env Decay", 425, 294, 0.01, 0.01, 15.0 },
+  { "Filter Env Sustain", 450, 294, 1.0, 0.001, 1.0 },
   { "Filter Env Release", 474, 294, 1.0, 0.01, 15.0 },
-  { "LFO Waveform", 291, 417, 0., 0., 0. },
-  { "LFO Amount", 326, 403, 0.0, 0.0, 1.0 },
-  { "LFO Frequency", 375, 403, 6.0, 0.01, 30.0 },
-  { "LFO Offset", 424, 403, 6.0, 0.01, 30.0 },
-  { "LFO Gain", 473, 403, 6.0, 0.01, 30.0 },
-  { "EQ High", 818, 111, 1.0, 0.0, 2.0 },
-  { "EQ Mid", 818, 167, 1.0, 0.0, 2.0 },
-  { "EQ Low", 818, 223, 1.0, 0.0, 2.0 },
-  { "Out Vol", 811, 402, 1.0, 0.0, 1.0 },
-  { "Bend Range", 13, 525, 1.0, 0.0, 1.0 },
-  { "Glide", 9, 482, 1.0, 0.0, 1.0 },
-  { "Pitch Mod", 52, 481, 1.0, 0.0, 1.0 },
+  { "LFO Waveform", 291, 417, 0.0, 0.0, 0.0 },
+  { "LFO Amount", 326, 403, 1.0, 0.0, 1.0 },
+  { "LFO Frequency", 375, 403, 6.0, 0.0, 50.0 },
+  { "LFO Offset", 424, 403, 0.0, 0.0, 1.0 },
+  { "LFO Gain", 473, 403, 0.0, 0.0, 12.0 },
+  { "EQ High", 818, 111, 0.0, -6.0, 6.0 },
+  { "EQ Mid", 818, 167, 0.0, -6.0, 6.0 },
+  { "EQ Low", 818, 223, 0.0, -6.0, 6.0 },
+  { "Out Vol", 811, 402, 0.5, 0.0, 1.0 },
+  { "Bend Range", 13, 525, 0.0, -7.0, 7.0 },
+  { "Glide", 9, 482, 0.0, 0.0, 1.0 },
+  { "Pitch Mod", 52, 481, 0.0, -1.0, 1.0 }
 };
 
 enum ELayout
@@ -164,8 +168,8 @@ Vega::Vega(IPlugInstanceInfo instanceInfo)
 {
   TRACE;
 
-  CreateParams();
   CreateGraphics();
+  CreateParams();
   CreatePresets();
 
   mMIDIReceiver.noteOn.Connect(this, &Vega::onNoteOn);
@@ -239,6 +243,27 @@ void Vega::CreateParams() {
       param->InitEnum(properties.name,
         Filter::FILTER_MODE_LOWPASS,
         Filter::kNumFilterModes);
+      param->SetDisplayText(0, properties.name);
+      break;
+      // Integer Parameters (Using double notation)
+    case mOsc1Oct:
+    case mOsc2Oct:
+    case mOsc3Oct:
+    case mOsc1Pitch:
+    case mOsc2Pitch:
+    case mOsc3Pitch:
+    case mOsc1Phase:
+    case mOsc2Phase:
+    case mOsc3Phase:
+    case mBendRange:
+    case mOsc1Voices:
+    case mOsc2Voices:
+    case mOsc3Voices:
+    case mFilterSlope:
+      param->InitInt(properties.name,
+        (int)properties.defaultVal,
+        (int)properties.minVal,
+        (int)properties.maxVal);
       break;
       // Double Parameters:
     default:
@@ -255,6 +280,7 @@ void Vega::CreateParams() {
   GetParam(mVolSustain)->SetShape(2);
   GetParam(mVolRelease)->SetShape(3);
   GetParam(mFilterCutoff)->SetShape(2);
+  GetParam(mFilterCtlCutoff)->SetShape(2);
   GetParam(mFilterAttack)->SetShape(3);
   GetParam(mFilterDecay)->SetShape(3);
   GetParam(mFilterSustain)->SetShape(2);
@@ -272,19 +298,19 @@ void Vega::CreateGraphics() {
   pGraphics->AttachBackground(BACKGROUND_ID, BACKGROUND_FN);
 
   IBitmap knobImage = pGraphics->LoadIBitmap(KNOB_ID, KNOB_FN, kKnobFrames);
+  IBitmap whiteKeyImage = pGraphics->LoadIBitmap(PIANO_WHT_ID, PIANO_WHT_FN, 6);
+  IBitmap blackKeyImage = pGraphics->LoadIBitmap(PIANO_BLK_ID, PIANO_BLK_FN);
   IBitmap miniKnobImage = pGraphics->LoadIBitmap(MINIKNOB_ID, MINIKNOB_FN, kKnobFrames);
   IBitmap waveImage = pGraphics->LoadIBitmap(WAVE_ID, WAVE_FN, 4);
   IBitmap slopeImage = pGraphics->LoadIBitmap(SLOPE_ID, SLOPE_FN, 3);
   IBitmap voicesImage = pGraphics->LoadIBitmap(VOICES_ID, VOICES_FN, 8);
   IBitmap octaveImage = pGraphics->LoadIBitmap(OCTAVE_ID, OCTAVE_FN, 9);
   IBitmap noteImage = pGraphics->LoadIBitmap(NOTE_ID, NOTE_FN, 15);
-  IBitmap whiteKeyImage = pGraphics->LoadIBitmap(PIANO_WHT_ID, PIANO_WHT_FN, 6);
-  IBitmap blackKeyImage = pGraphics->LoadIBitmap(PIANO_BLK_ID, PIANO_BLK_FN);
   IBitmap passImage = pGraphics->LoadIBitmap(PASS_ID, PASS_FN, 3);
   IBitmap sliderImage = pGraphics->LoadIBitmap(SLIDER_ID, SLIDER_FN, 1);
-  IBitmap buttonGrnImage = pGraphics->LoadIBitmap(BUTTON_ID, BUTTON_FN, 1);
-  IBitmap buttonAddImage = pGraphics->LoadIBitmap(ADD_ID, ADD_FN, 1);
-  IBitmap wheelImage = pGraphics->LoadIBitmap(PITCHMOD_ID, PITCHMOD_FN, 100);
+  IBitmap buttonGrnImage = pGraphics->LoadIBitmap(BUTTON_ID, BUTTON_FN, 2);
+  IBitmap buttonAddImage = pGraphics->LoadIBitmap(ADD_ID, ADD_FN, 2);
+  IBitmap wheelImage = pGraphics->LoadIBitmap(PITCHMOD_ID, PITCHMOD_FN, kKnobFrames);
 
   keyboardY = kHeight - 85;
   keyboardX = kWidth - 788;
@@ -299,7 +325,6 @@ void Vega::CreateGraphics() {
     IControl* control;
     IBitmap* graphic;
     switch (i) {
-      // Switches:
     case mOsc1Wave:
     case mOsc2Wave:
     case mOsc3Wave:
@@ -321,8 +346,8 @@ void Vega::CreateGraphics() {
     case mOsc2Retrig:
     case mOsc3Invert:
     case mOsc3Retrig:
-      //graphic = &buttonGrnImage;    
-      //control = new ISwitchControl(this, properties.x, properties.y, i, graphic);
+      graphic = &buttonGrnImage;    
+      control = new ISwitchControl(this, properties.x, properties.y, i, graphic);
       break;
     case mVolAttack:
     case mVolDecay:
@@ -365,7 +390,6 @@ void Vega::CreateGraphics() {
       graphic = &wheelImage;
       control = new IKnobMultiControl(this, properties.x, properties.y, i, graphic);
       break;
-    // add pic
     default:
       graphic = &knobImage;
       control = new IKnobMultiControl(this, properties.x, properties.y, i, graphic);
@@ -394,7 +418,6 @@ void Vega::Reset()
 void Vega::OnParamChange(int paramIdx)
 {
   IMutexLock lock(this);
-  int stage = 4;
 
   switch (paramIdx)
   {
