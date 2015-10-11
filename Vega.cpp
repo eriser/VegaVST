@@ -228,15 +228,9 @@ void Vega::CreateParams() {
     case mOsc1Wave:
     case mOsc2Wave:
     case mOsc3Wave:
-      param->InitEnum(properties.name,
-        Oscillator::OSCILLATOR_MODE_SAW,
-        Oscillator::kNumOscillatorModes);
-      // For VST3:
-      param->SetDisplayText(0, properties.name);
-      break;
     case mLFOWave:
       param->InitEnum(properties.name,
-        Oscillator::OSCILLATOR_MODE_TRIANGLE,
+        Oscillator::OSCILLATOR_MODE_SAW,
         Oscillator::kNumOscillatorModes);
       // For VST3:
       param->SetDisplayText(0, properties.name);

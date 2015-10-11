@@ -285,6 +285,7 @@
     <ClInclude Include="Oscillator.h" />
     <ClInclude Include="Vega.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Voice.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ASIO_SDK\asio.cpp" />
@@ -300,6 +301,7 @@
     <ClCompile Include="MIDIReceiver.cpp" />
     <ClCompile Include="Oscillator.cpp" />
     <ClCompile Include="Vega.cpp" />
+    <ClCompile Include="Voice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Vega.rc" />

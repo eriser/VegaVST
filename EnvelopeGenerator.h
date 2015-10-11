@@ -10,7 +10,6 @@ public:
     currentStage(ENVELOPE_STAGE_OFF),
     currentLevel(minimumLevel),
     multiplier(1.0),
-    sampleRate(44100.0),
     currentSampleIndex(0),
     nextStageSampleIndex(0) {
       stageValue[ENVELOPE_STAGE_OFF] = 0.0;
@@ -31,7 +30,8 @@ public:
   void enterStage(EnvelopeStage newStage);
   void setStageValue(EnvelopeStage newStage, double valToSet);
   double nextSample();
-  void setSampleRate(double newSampleRate);
+  static void setSampleRate(double newSampleRate);
+  void reset();
   inline EnvelopeStage getCurrentStage() const { return currentStage; }
   const double minimumLevel;
   Signal0<> beganEnvelopeCycle;
@@ -40,7 +40,7 @@ private:
   EnvelopeStage currentStage;
   double currentLevel;
   double multiplier;
-  double sampleRate;
+  static double sampleRate;
   double stageValue[kNumEnvelopeStages];
   void calculateMultiplier(double startLevel, double endLevel, unsigned long long lengthInSamples);
   unsigned long long currentSampleIndex;

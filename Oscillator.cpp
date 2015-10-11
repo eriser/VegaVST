@@ -1,8 +1,8 @@
 #include "Oscillator.h"
 
-Oscillator::~Oscillator()
-{
-}
+double Oscillator::mSampleRate = 44100.0;
+
+Oscillator::~Oscillator() {}
 
 void Oscillator::setMode(OscillatorMode mode) {
   mOscillatorMode = mode;

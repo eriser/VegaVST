@@ -17,16 +17,14 @@ public:
   void setMode(OscillatorMode mode);
   void setFrequency(double frequency);
   void setSampleRate(double sampleRate);
-  inline void setMuted(bool muted) { isMuted = muted; }
+  inline void reset() { mPhase = 0.0; }
   double nextSample();
   Oscillator() :
     mOscillatorMode(OSCILLATOR_MODE_SINE),
     mFrequency(440.0),
     mPI(2 * acos(0.0)),
     mTwoPI(2 * mPI),
-    isMuted(true),
-    mPhase(0.0),
-    mSampleRate(44100.0) {
+    mPhase(0.0) {
      updateIncrement();
     };
   ~Oscillator();
@@ -36,9 +34,8 @@ private:
   const double mTwoPI;
   double mFrequency;
   double mPhase;
-  double mSampleRate;
+  static double mSampleRate;
   double mPhaseIncrement;
-  bool isMuted;
   void updateIncrement();
 };
 

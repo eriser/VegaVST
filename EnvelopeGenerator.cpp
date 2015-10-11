@@ -1,6 +1,8 @@
 #include "EnvelopeGenerator.h"
 #include <math.h>
 
+double EnvelopeGenerator::sampleRate = 44100.0;
+
 EnvelopeGenerator::~EnvelopeGenerator() {}
 
 double EnvelopeGenerator::nextSample() {
@@ -73,7 +75,7 @@ void EnvelopeGenerator::enterStage(EnvelopeStage newStage) {
   }
 }
 
-void EnvelopeGenerator::setSampleRate(double newSampleRate) {
+static void setSampleRate(double newSampleRate) {
   sampleRate = newSampleRate;
 }
 
