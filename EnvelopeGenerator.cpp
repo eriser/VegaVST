@@ -75,10 +75,6 @@ void EnvelopeGenerator::enterStage(EnvelopeStage newStage) {
   }
 }
 
-static void setSampleRate(double newSampleRate) {
-  sampleRate = newSampleRate;
-}
-
 // TODO clean up
 void EnvelopeGenerator::setStageValue(EnvelopeStage stage, double valToSet) {
   stageValue[stage] = valToSet;

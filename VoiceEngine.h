@@ -14,5 +14,6 @@ public:
   void onNoteOn(int noteNumber, int velocity);
   void onNoteOff(int noteNumber, int velocity);
   double nextSample();
+  void setSampleRate(double sampleRate);
 };
 

@@ -30,7 +30,7 @@ public:
   void enterStage(EnvelopeStage newStage);
   void setStageValue(EnvelopeStage newStage, double valToSet);
   double nextSample();
-  static void setSampleRate(double newSampleRate);
+  static void setSampleRate(double newSampleRate) { sampleRate = newSampleRate; }
   void reset();
   inline EnvelopeStage getCurrentStage() const { return currentStage; }
   const double minimumLevel;

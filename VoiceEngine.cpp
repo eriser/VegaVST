@@ -49,3 +49,14 @@ double VoiceEngine::nextSample() {
   }
   return output;
 }
+
+void VoiceEngine::setSampleRate(double sampleRate) {
+  EnvelopeGenerator::setSampleRate(sampleRate);
+  for (int i = 0; i < NumberOfVoices; i++) {
+    Voice& voice = voices[i];
+    for (int j = 0; j < voice.mActiveOscs; j++) {
+      voice.mOsc[j].setSampleRate(sampleRate);
+    }
+  }
+  mLFO.setSampleRate(sampleRate);
+}

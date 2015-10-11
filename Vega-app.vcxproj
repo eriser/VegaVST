@@ -286,6 +286,7 @@
     <ClInclude Include="Vega.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Voice.h" />
+    <ClInclude Include="VoiceEngine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ASIO_SDK\asio.cpp" />
@@ -302,6 +303,7 @@
     <ClCompile Include="Oscillator.cpp" />
     <ClCompile Include="Vega.cpp" />
     <ClCompile Include="Voice.cpp" />
+    <ClCompile Include="VoiceEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Vega.rc" />
