@@ -1,5 +1,7 @@
 #include "Voice.h"
 
+int Voice::mActiveOscs = 1;
+
 Voice::~Voice() {}
 
 void Voice::reset() {
@@ -26,7 +28,7 @@ double Voice::nextSample() {
   double volumeEnvelopeValue = mVolumeEnvelope.nextSample();
   double filterEnvelopeValue = mFilterEnvelope.nextSample();
 
-  mFilter.setCutoffMod(filterEnvelopeValue * mFilterEnvelopeAmount + mLFOValue * mLFOAmount;
+  mFilter.setCutoffMod(filterEnvelopeValue * mFilterEnvelopeAmount + mLFOValue * mLFOAmount);
 
   return mFilter.process(oscSum * volumeEnvelopeValue * mVelocity / 127.0);
 }

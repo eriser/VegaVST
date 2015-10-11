@@ -162,20 +162,17 @@ enum ELayout
 };
 
 Vega::Vega(IPlugInstanceInfo instanceInfo)
-  :	IPLUG_CTOR(kNumParams, kNumPrograms, instanceInfo), mFrequency(1.),
-  lastVirtualKeyboardNoteNumber(virtualKeyboardMinimumNoteNumber - 1),
-  filterEnvelopeAmount(0.0), lfoFilterModAmount(0.1)
+  :	IPLUG_CTOR(kNumParams, kNumPrograms, instanceInfo),
+  lastVirtualKeyboardNoteNumber(virtualKeyboardMinimumNoteNumber - 1)
 {
   TRACE;
 
-  CreateGraphics();
   CreateParams();
+  CreateGraphics();
   CreatePresets();
 
-  mMIDIReceiver.noteOn.Connect(this, &Vega::onNoteOn);
-  mMIDIReceiver.noteOff.Connect(this, &Vega::onNoteOff);
-  mEnvelopeGenerator.beganEnvelopeCycle.Connect(this, &Vega::onBeganEnvelopeCycle);
-  mEnvelopeGenerator.finishedEnvelopeCycle.Connect(this, &Vega::onFinishedEnvelopeCycle);
+  mMIDIReceiver.noteOn.Connect(&mVoiceEngine, &VoiceEngine::onNoteOn);
+  mMIDIReceiver.noteOff.Connect(&mVoiceEngine, &VoiceEngine::onNoteOff);
 }
 
 Vega::~Vega() {}
@@ -211,14 +208,9 @@ void Vega::ProcessDoubleReplacing(double** inputs, double** outputs, int nFrames
   processVirtualKeyboard();
   
   // Copy left buffer into right buffer:
-  for (int s = 0; s < nFrames; ++s) {
+  for (int i = 0; i < nFrames; ++i) {
     mMIDIReceiver.advance();
-    int velocity = mMIDIReceiver.getLastVelocity();
-    double lfoFilterModulation = mLFO.nextSample() * lfoFilterModAmount;
-    mOscillator.setFrequency(mMIDIReceiver.getLastFrequency());
-    mFilter.setCutoffMod((mFilterEnvelopeGenerator.nextSample() * filterEnvelopeAmount) + lfoFilterModulation);
-    leftOutput[s] = rightOutput[s] = mOscillator.nextSample() * velocity / 127.0;
-    mFilter.process(mOscillator.nextSample() * mEnvelopeGenerator.nextSample() * velocity / 127.0);
+    leftOutput[i] = rightOutput[i] = mVoiceEngine.nextSample();
   }
   mMIDIReceiver.Flush(nFrames);
 }
@@ -409,60 +401,19 @@ void Vega::Reset()
 {
   TRACE;
   IMutexLock lock(this);
-  mOscillator.setSampleRate(GetSampleRate());
-  mFilterEnvelopeGenerator.setSampleRate(GetSampleRate());
-  mEnvelopeGenerator.setSampleRate(GetSampleRate());
-  mLFO.setSampleRate(GetSampleRate());
+  mVoiceEngine.setSampleRate(mSampleRate);
 }
 
 void Vega::OnParamChange(int paramIdx)
 {
   IMutexLock lock(this);
-
+  /*
   switch (paramIdx)
   {
-    case mOsc1Wave:
-      mOscillator.setMode(static_cast<Oscillator::OscillatorMode>(GetParam(mOsc1Wave)->Int()));
-      break;
-    case mVolAttack:
-      mEnvelopeGenerator.setStageValue(EnvelopeGenerator::ENVELOPE_STAGE_ATTACK, GetParam(paramIdx)->Value());
-      break;
-    case mVolDecay:
-      mEnvelopeGenerator.setStageValue(EnvelopeGenerator::ENVELOPE_STAGE_DECAY, GetParam(paramIdx)->Value());
-      break;
-    case mVolSustain:
-      mEnvelopeGenerator.setStageValue(EnvelopeGenerator::ENVELOPE_STAGE_SUSTAIN, GetParam(paramIdx)->Value());
-      break;
-    case mVolRelease:
-      mEnvelopeGenerator.setStageValue(EnvelopeGenerator::ENVELOPE_STAGE_RELEASE, GetParam(paramIdx)->Value());
-      break;
-    case mFilterCutoff:
-      mFilter.setCutoff(GetParam(paramIdx)->Value());
-      break;
-    case mFilterReso:
-      mFilter.setResonance(GetParam(paramIdx)->Value());
-      break;
-    case mFilterType:
-      mFilter.setFilterMode(static_cast<Filter::FilterMode>(GetParam(paramIdx)->Int()));
-      break;
-    case mFilterAttack:
-      mFilterEnvelopeGenerator.setStageValue(EnvelopeGenerator::ENVELOPE_STAGE_ATTACK, GetParam(paramIdx)->Value());
-      break;
-    case mFilterDecay:
-      mFilterEnvelopeGenerator.setStageValue(EnvelopeGenerator::ENVELOPE_STAGE_DECAY, GetParam(paramIdx)->Value());
-      break;
-    case mFilterSustain:
-      mFilterEnvelopeGenerator.setStageValue(EnvelopeGenerator::ENVELOPE_STAGE_SUSTAIN, GetParam(paramIdx)->Value());
-      break;
-    case mFilterRelease:
-      mFilterEnvelopeGenerator.setStageValue(EnvelopeGenerator::ENVELOPE_STAGE_RELEASE, GetParam(paramIdx)->Value());
-      break;
-    case mFilterAmount:
-      filterEnvelopeAmount = GetParam(paramIdx)->Value();
-      break;
     default:
       break;
   }
+  */
 }
 
 void Vega::ProcessMidiMsg(IMidiMsg* pMsg) {

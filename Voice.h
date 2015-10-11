@@ -13,7 +13,7 @@ private:
   Filter mFilter;
   int mNoteNumber;
   int mVelocity;
-  int mActiveOscs;
+  static int mActiveOscs;
   double mFilterEnvelopeAmount, mFilterCutoff, mFilterReso;
   double mOscVol[MAX_OSC];
   double mOscPitch[MAX_OSC];
@@ -24,6 +24,7 @@ private:
   bool isActive;
 public:
   friend class VoiceEngine;
+  ~Voice();
   Voice()
     : mNoteNumber(-1),
     mVelocity(0),
@@ -35,12 +36,12 @@ public:
     mLFOOffset(0.0),
     mLFOGain(0.0),
     mLFOValue(0.0),
-    mActiveOscs(1),
     isActive(false) {
       // Set myself free everytime my volume envelope has fully faded out of RELEASE stage:
       mVolumeEnvelope.finishedEnvelopeCycle.Connect(this, &Voice::setFree);
     };
 
+  inline void setActiveOscs(int activeOscs) { mActiveOscs = activeOscs; }
   inline void setFilterEnvelopeAmount(double amount) { mFilterEnvelopeAmount = amount; }
   inline void setOscillatorPitch(int osc, double amount) { mOscPitch[osc] = amount; }
   inline void setOscillatorDetune(int osc, double amount) { mOscDetune[osc] = amount; }
