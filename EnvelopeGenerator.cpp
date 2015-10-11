@@ -124,4 +124,12 @@ void EnvelopeGenerator::setStageValue(EnvelopeStage stage, double valToSet) {
   }
 }
 
+void EnvelopeGenerator::reset() {
+  currentStage = ENVELOPE_STAGE_OFF;
+  currentLevel = minimumLevel;
+  multiplier = 1.0;
+  currentSampleIndex = 0;
+  nextStageSampleIndex = 0;
+}
+
 

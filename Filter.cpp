@@ -23,3 +23,7 @@ double Filter::process(double inputValue) {
     return 0.0;
   }
 }
+
+void Filter::reset() {
+  buf0 = buf1 = buf2 = buf3 = 0.0;
+}

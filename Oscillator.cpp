@@ -24,7 +24,6 @@ void Oscillator::updateIncrement() {
 
 double Oscillator::nextSample() {
   double value = 0.0;
-  if (isMuted) return value;
 
   switch (mOscillatorMode) {
   case OSCILLATOR_MODE_SINE:

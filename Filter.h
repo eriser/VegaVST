@@ -23,6 +23,7 @@ public:
     };
   ~Filter();
   double process(double inputValue);
+  void reset();
   inline void setCutoff(double newCutoff) { cutoff = newCutoff; calculateFeedbackAmount(); };
   inline void setCutoffMod(double newCutoffMod) { 
     cutoffMod = newCutoffMod;
